@@ -10,6 +10,7 @@ class CommissionType(models.Model):
         return self.name
 
     class Meta:
+        ordering = ["name"]
         verbose_name = 'commission type'
         verbose_name_plural = 'commission types'
 
@@ -32,5 +33,6 @@ class Commission(models.Model):
         return reverse('request_detail', args=[str(self.id)])
 
     class Meta:
+        ordering = ["created_on"]
         verbose_name = 'commission'
         verbose_name_plural = 'commissions'

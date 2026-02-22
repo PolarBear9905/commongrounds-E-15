@@ -20,6 +20,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField()),
             ],
             options={
+                'ordering': ['name'],
                 'verbose_name': 'commission type',
                 'verbose_name_plural': 'commission types',
             },
@@ -36,6 +37,7 @@ class Migration(migrations.Migration):
                 ('commission_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='commissions.commissiontype')),
             ],
             options={
+                'ordering': ['created_on'],
                 'verbose_name': 'commission',
                 'verbose_name_plural': 'commissions',
             },
