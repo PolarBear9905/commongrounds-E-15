@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('people_required', models.IntegerField()),
                 ('created_on', models.DateTimeField(auto_now_add=True)),
                 ('updated_on', models.DateTimeField(auto_now=True)),
-                ('commission_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='commissions.commissiontype')),
+                ('commission_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='commissions', to='commissions.commissiontype')),
             ],
             options={
                 'ordering': ['created_on'],

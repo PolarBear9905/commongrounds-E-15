@@ -21,7 +21,8 @@ class Commission(models.Model):
     people_required = models.IntegerField()
     commission_type = models.ForeignKey(
         CommissionType,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='commissions'
     )
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
