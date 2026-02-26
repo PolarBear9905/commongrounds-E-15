@@ -26,6 +26,6 @@ class RequestDetailView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['request'] = Commission.objects.get(
-            id=self.kwargs['request_id']
+            id=self.kwargs['pk']
         )
         return context

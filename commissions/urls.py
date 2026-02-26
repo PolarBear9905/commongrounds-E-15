@@ -9,7 +9,7 @@ urlpatterns = [
         name='request_list'
     ),
     path(
-        'request/<int:request_id>/',
+        'request/<int:pk>/',
         RequestDetailView.as_view(),
         name='request_detail'
     ),
