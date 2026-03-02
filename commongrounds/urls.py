@@ -20,4 +20,5 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('localevents/', include('localevents.urls')),
+    path('commissions/', include('commissions.urls')),
 ]
