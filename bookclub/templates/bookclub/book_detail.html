@@ -8,8 +8,7 @@
     <p><b>Author:</b> {{ book.author }}</p>
     <p><b>Published:</b> {{ book.publication_year }}</p>
 
-    <p><b>Category:</b> {{ book.genre.name }}</p>
-    <p>{{ book.genre.description }}</p>
+    <p><b>Genre:</b> {{ book.genre.name }} - {{ book.genre.description }}</p>
 
     <p><b>Created:</b> {{ book.created_on }}</p>
     <p><b>Updated:</b> {{ book.updated_on }}</p>

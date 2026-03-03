@@ -23,6 +23,7 @@ class BookAdmin(admin.ModelAdmin):
         'publication_year'
     ]
     ordering = ['-publication_year']
+    readonly_fields = ('created_on', 'updated_on')
 
 
 admin.site.register(BookCategory, BookCategoryAdmin)
