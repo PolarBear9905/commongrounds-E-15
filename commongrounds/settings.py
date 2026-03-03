@@ -29,7 +29,7 @@ except UnicodeDecodeError:
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -43,12 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'merchstore',
-    'localevents',
     'bookclub',
-    'diyprojects',
-    'commissions',
-
+    #'merchstore',
+    #'localevents',
+    #'diyprojects',
+    #'commissions',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Club Details{% endblock %}
+
+{% block content %}
+    <hr>
+    <h1>{{ book.title }}</h1>
+    <p><b>Author:</b> {{ book.author }}</p>
+    <p><b>Published:</b> {{ book.publication_year }}</p>
+
+    <p><b>Category:</b> {{ book.genre.name }}</p>
+    <p>{{ book.genre.description }}</p>
+
+    <p><b>Created:</b> {{ book.created_on }}</p>
+    <p><b>Updated:</b> {{ book.updated_on }}</p>
+    
+    <a href="/bookclub/books"class="back-btn btn">Back</a>
+{% endblock %}
