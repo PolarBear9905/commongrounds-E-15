@@ -1,10 +1,11 @@
 from django.db import models
 from django.urls import reverse
 
+
 class ProjectCategory(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    
+
     def __str__(self):
         return self.name
 
@@ -12,6 +13,7 @@ class ProjectCategory(models.Model):
         ordering = ["name"]
         verbose_name = 'project category'
         verbose_name_plural = 'project categories'
+
 
 class Project(models.Model):
     title = models.CharField(max_length=255)

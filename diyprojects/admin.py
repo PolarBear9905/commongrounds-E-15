@@ -1,11 +1,13 @@
 from django.contrib import admin
 from .models import ProjectCategory, Project
 
+
 class ProjectCategoryAdmin(admin.ModelAdmin):
     model = ProjectCategory
-    list_display = ['name','description']
+    list_display = ['name', 'description']
     ordering = ["name"]
-    
+
+
 class ProjectAdmin(admin.ModelAdmin):
     model = Project
     list_display = [
@@ -18,6 +20,7 @@ class ProjectAdmin(admin.ModelAdmin):
         'updated_on'
     ]
     ordering = ["-created_on"]
+
 
 admin.site.register(ProjectCategory, ProjectCategoryAdmin)
 admin.site.register(Project, ProjectAdmin)
