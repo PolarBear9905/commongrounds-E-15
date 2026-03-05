@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Merch Store Details{% endblock %}
+
+{% block content %}
+    <h2>Product Details</h2>
+    <hr>
+    <h2>{{product.name}}</h2>
+    <p>{{product.description}}</p>
+    <table>
+        <tr>
+            <th>Type:</th>
+            <td>{{product.product_type}}</td>
+        </tr>
+        <tr>
+            <th>Price:</th>
+            <td>{{product.price}}</td>
+        </tr>
+    </table>
+    <a href="/merchstore/items"class="back-btn btn">Back</a>
+{% endblock %}
