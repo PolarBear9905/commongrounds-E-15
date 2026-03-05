@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'localevents',
     'commissions',
+    'merchstore',
 ]
 
 MIDDLEWARE = [
