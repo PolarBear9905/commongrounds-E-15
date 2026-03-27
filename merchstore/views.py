@@ -7,7 +7,7 @@ from accounts.mixins import RoleRequiredMixin
 from .forms import TransactionForm
 
 def index(request):
-    return redirect('items/')
+        return redirect('items/')
 
 class ProductListView(ListView):
     model = Product
@@ -30,7 +30,7 @@ class ProductListView(ListView):
         context['user_products'] = user_products
         context['all_products'] = all_products
         return context
-    
+
 
 class ProductDetailView(DetailView):
     model = Product
@@ -45,10 +45,8 @@ class ProductDetailView(DetailView):
         product = Product.objects.get(pk=pk)
         form = TransactionForm(request.POST)
 
-
         if not request.user.is_authenticated:
             return redirect('accounts:login')
-
 
         if form.is_valid():
             transaction = form.save(commit=False)
@@ -56,15 +54,12 @@ class ProductDetailView(DetailView):
             transaction.product = product
             transaction.status = "OC"
 
-
             if product.stock >= transaction.amount:
                 product.stock -= transaction.amount
                 product.save()
                 transaction.save()
 
-
         return redirect('merchstore:merchstore-cart')
-
 
 
 class ProductCreateView(RoleRequiredMixin, LoginRequiredMixin, CreateView):
@@ -76,8 +71,8 @@ class ProductCreateView(RoleRequiredMixin, LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user.profile
         return super().form_valid(form)
+   
 
-    
 class ProductUpdateView(RoleRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Product
     required_role = "MS"
@@ -88,11 +83,10 @@ class ProductUpdateView(RoleRequiredMixin, LoginRequiredMixin, UpdateView):
         return super().get_queryset().filter(owner=self.request.user.profile)
 
     def form_valid(self, form):
-        product = form.save(commit=False)
-        if product.stock == 0:
-            product.status = "Out of stock"
+        if form.instance.stock == 0:
+            form.instance.status = "Out of stock"
         else:
-            product.status = "Available"
+            form.instance.status = "Available"
         return super().form_valid(form)
 
 class CartView(LoginRequiredMixin, ListView):
@@ -109,5 +103,4 @@ class TransactionsListView(LoginRequiredMixin, ListView):
     context_object_name = "transactions"
 
     def get_queryset(self):
-        return Transaction.objects.filter(product_owner=self.request.user.profile)
-
+        return Transaction.objects.filter(product__owner=self.request.user.profile) #double underscore finds owner in product model
