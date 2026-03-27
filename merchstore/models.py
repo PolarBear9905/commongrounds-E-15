@@ -39,9 +39,9 @@ class Product(models.Model):
     )
     stock = models.PositiveIntegerField()
     STATUS = {
-        "A": "available",
-        "OS": "on sale",
-        "OOS": "out of stock"
+        "A": "Available",
+        "OS": "On sale",
+        "OOS": "Out of stock"
     }
     status = models.CharField(
         max_length = 3,
@@ -78,11 +78,11 @@ class Transaction(models.Model):
         validators=[MinValueValidator(1)]
     )
     STATUS = {
-        "OC": "on cart",
-        "TP": "to pay",
-        "TS": "to ship",
-        "TR": "to receive",
-        "D": "delivered"
+        "OC": "On cart",
+        "TP": "To pay",
+        "TS": "To ship",
+        "TR": "To receive",
+        "D": "Delivered"
     }
     status = models.CharField(
         max_length = 5,

@@ -3,6 +3,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Product, Transaction
+from accounts.mixins import RoleRequiredMixin
+from .forms import TransactionForm
 
 def index(request):
     return redirect('items/')
@@ -34,10 +36,40 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = "merchstore/product_detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = TransactionForm()
+        return context
+   
+    def post(self, request, pk):
+        product = Product.objects.get(pk=pk)
+        form = TransactionForm(request.POST)
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+        if not request.user.is_authenticated:
+            return redirect('accounts:login')
+
+
+        if form.is_valid():
+            transaction = form.save(commit=False)
+            transaction.buyer = request.user.profile
+            transaction.product = product
+            transaction.status = "OC"
+
+
+            if product.stock >= transaction.amount:
+                product.stock -= transaction.amount
+                product.save()
+                transaction.save()
+
+
+        return redirect('merchstore:merchstore-cart')
+
+
+
+class ProductCreateView(RoleRequiredMixin, LoginRequiredMixin, CreateView):
     model = Product
+    required_role = "MS"
     template_name = "merchstore/product_create.html"
     fields = ['name', 'product_type', 'product_image', 'description', 'price', 'stock', 'status']
 
@@ -46,12 +78,22 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     
-
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(RoleRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Product
+    required_role = "MS"
     template_name = "merchstore/product_update.html"
     fields = ['name', 'product_type', 'product_image', 'description', 'price', 'stock', 'status']
 
+    def get_queryset(self):
+        return super().get_queryset().filter(owner=self.request.user.profile)
+
+    def form_valid(self, form):
+        product = form.save(commit=False)
+        if product.stock == 0:
+            product.status = "Out of stock"
+        else:
+            product.status = "Available"
+        return super().form_valid(form)
 
 class CartView(LoginRequiredMixin, ListView):
     model = Transaction
@@ -59,7 +101,7 @@ class CartView(LoginRequiredMixin, ListView):
     context_object_name = "transactions"
 
     def get_queryset(self):
-        return Transaction.objects.filter(buyer=self.reuqest.user.profile).get_queryset()
+        return Transaction.objects.filter(buyer=self.request.user.profile)
 
 class TransactionsListView(LoginRequiredMixin, ListView):
     model = Transaction
@@ -67,5 +109,5 @@ class TransactionsListView(LoginRequiredMixin, ListView):
     context_object_name = "transactions"
 
     def get_queryset(self):
-        return Transaction.objects.filter(product_owner=self.reuqest.user.profile).get_queryset()
+        return Transaction.objects.filter(product_owner=self.request.user.profile)
 

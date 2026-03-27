@@ -5,17 +5,44 @@
 {% block content %}
     <h2>Product Details</h2>
     <hr>
-    <h2>{{product.name}}</h2>
-    <p>{{product.description}}</p>
+    <h2>{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+    <br>
+    <h3>Type</h3>
+    {% if product.product_type %}
+    <h4>{{ product.product_type }}</h4>
+    <p>{{ product.product_type.description }}</p>
+    {% else %}
+    <h4>None</h4>
+    {% endif %}
     <table>
         <tr>
-            <th>Type:</th>
-            <td>{{product.product_type}}</td>
+            <th>Price</th>
+            <td>{{ product.price }}</td>
         </tr>
         <tr>
-            <th>Price:</th>
-            <td>{{product.price}}</td>
+            <th>Stock</th>
+            <td>{{ product.stock }}</td>
         </tr>
     </table>
-    <a href="/merchstore/items"class="back-btn btn">Back</a>
+    {% if user.is_authenticated and user.profile != product.owner %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+
+
+        <button type="submit"
+            {% if object.stock == 0 %}disabled{% endif %}>
+            Buy
+        </button>
+    </form>
+    {% endif %}
+
+
+    {% if user.profile == product.owner %}
+        <a href="{% url 'merchstore:merchstore-update' product.id %}">
+            Edit Product
+        </a>
+    {% endif %}
+    <a href="/merchstore/items"class="btn align-right">Back</a>
 {% endblock %}
