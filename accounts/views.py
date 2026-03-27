@@ -7,10 +7,10 @@ from .models import Profile
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     template_name = "accounts/account_update.html"
-    fields = ['display_name']
+    fields = ['display_name', 'role']
     
     def get_object(self):
-        return Profile.objects.get(user__username=self.kwargs['username'])
+        return self.request.user.profile
     
     def get_success_url(self):
-        return reverse_lazy('accounts:update', kwargs={'username': self.object.user.username})
+        return reverse_lazy('home')
